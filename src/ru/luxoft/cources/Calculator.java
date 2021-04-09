@@ -1,30 +1,15 @@
 package ru.luxoft.cources;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Calculator {
-    private static final String REGEX_FIRST_NUMBER = "^\\-{0,1}[0-9]{1,}[.]{0,1}[0-9]{0,}";
-    private static final String REGEX_INPUT = "^\\-{0,1}[0-9]{1,}[.]{0,1}[0-9]{0,}[\\+\\*\\/\\-]\\-{0,1}[0-9]{1,}[.]{0,1}[0-9]{0,}$";
-    private static final String REGEX_FACT = "^[0-9]{1,}[!]$";
+    private static final String REGEX_OPERATION = "[+*/\\-!]";
 
     private double firstNumber = 0;
     private double secondNumber = 0;
     private String mathAction;
 
-    public static void main(String[] args) {
-        Calculator calculator = new Calculator();
-        String userInput = "";
-        System.out.println("Console Calculator For 2 Values");
-        while (!"q".equals(userInput)) {
-            userInput = calculator.doUserInputAndCalculate();
-        }
-
-        System.out.println("Program Exit");
-    }
-
-    private String doUserInputAndCalculate() {
+    String doUserInputAndCalculate() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter expression A+B, A-B, etc. and press Enter");
         String userInput = scanner.nextLine().trim();
@@ -43,34 +28,26 @@ public class Calculator {
         if ("q".equals(userInput)) {
             return true;
         }
-        boolean userError = true;
-        String firstNumberStr;
-        String secondNumberStr;
+        boolean isUserInputCorrect = true;
         mathAction = "";
-        if (matchWithRegex(userInput, REGEX_INPUT).equals(userInput)) {
-            firstNumberStr = matchWithRegex(userInput, REGEX_FIRST_NUMBER);
-            firstNumber = Double.parseDouble(firstNumberStr);
-            secondNumberStr = userInput.substring(firstNumberStr.length() + 1);
-            secondNumber = Double.parseDouble(secondNumberStr);
-            mathAction = userInput.substring(firstNumberStr.length(), firstNumberStr.length() + 1);
-        } else if (matchWithRegex(userInput, REGEX_FACT).equals(userInput)) {
-            firstNumberStr = userInput.substring(0, userInput.length() - 1);
-            firstNumber = Double.parseDouble(firstNumberStr);
-            mathAction = "!";
+        String[] operators = userInput.replaceAll(REGEX_OPERATION, " $0 ").split(" ");
+        if (validateInput(operators)) {
+            firstNumber = Double.parseDouble(operators[0]);
+            mathAction = operators[1];
+            if (!"!".equals(mathAction)) {
+                secondNumber = Double.parseDouble(operators[2]);
+            }
         } else {
-            userError = false;
+            isUserInputCorrect = false;
         }
-        return userError;
+        return isUserInputCorrect;
     }
 
-    private String matchWithRegex(String str, String regex) {
-        String res = "";
-        Pattern userPattern = Pattern.compile(regex);
-        Matcher userMatcher = userPattern.matcher(str);
-        if (userMatcher.find()) {
-            res = str.substring(userMatcher.start(), userMatcher.end());
-        }
-        return res;
+    private boolean validateInput(String[] operators) {
+        return operators != null
+                && ((operators.length == 2 && "!".equals(operators[1]))
+                || (operators.length == 3 && !"!".equals(operators[1]))
+        );
     }
 
     private Double calcResult() {
@@ -127,5 +104,4 @@ public class Calculator {
         }
         return res;
     }
-
 }
