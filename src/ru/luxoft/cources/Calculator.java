@@ -30,7 +30,9 @@ public class Calculator {
         String userInput = scanner.nextLine().trim();
 
         if (readUserInput(userInput)) {
-            displayResult(calcResult());
+            if (!"q".equals(userInput)) {
+                displayResult(calcResult());
+            }
         } else {
             System.out.println("User Error Data!");
         }
