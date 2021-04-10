@@ -58,6 +58,7 @@ public abstract class Score implements MoneyInterface {
         }
     }
 
+    // Do not understand What For This Method?
     protected abstract boolean checkBefore();
 
     @Override
