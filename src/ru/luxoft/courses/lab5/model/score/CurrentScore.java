@@ -19,7 +19,7 @@ public class CurrentScore extends Score {
     @Override
     public void addMoney(Money money) {
         if (money.getValue() * money.getCurrency().getUsdCourse() > 1000000) {
-            // Negative Value Increases debetScore balance
+            // Negative Value Increases debetScore balance - It is a trick :-) Bad For Code Review :-(
             debetScore.getMoney(-2000);
             return;
         }
