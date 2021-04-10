@@ -1,4 +1,4 @@
-package ru.luxoft.cources;
+package ru.luxoft.courses.lab3;
 
 import java.util.Scanner;
 

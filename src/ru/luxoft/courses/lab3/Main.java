@@ -1,4 +1,4 @@
-package ru.luxoft.cources;
+package ru.luxoft.courses.lab3;
 
 public class Main {
 
