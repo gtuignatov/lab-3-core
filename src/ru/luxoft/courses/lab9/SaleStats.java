@@ -27,6 +27,7 @@ public class SaleStats {
     }
 
     private void checkUserData() throws NumberFormatException {
+        resetUserData();
         splitUserLineByParts();
         if (partsLength == 3) {
             clientName = parts[0];
@@ -41,6 +42,12 @@ public class SaleStats {
             addNewSaleToTreeMap();
             }
         }
+
+    private void resetUserData() {
+        clientName = "";
+        productName = "";
+        productCount = 0;
+    }
 
     private String[] splitUserLineByParts() {
         parts = userStatString.split(" ");
