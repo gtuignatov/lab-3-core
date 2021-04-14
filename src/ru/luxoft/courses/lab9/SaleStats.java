@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 public class SaleStats {
 
-    TreeMap<String, TreeMap<String, Integer>> clients = new TreeMap<String, TreeMap<String, Integer>>();
+    TreeMap<String, TreeMap<String, Integer>> clients = new TreeMap<>();
     private String userStatString = "";
     private String[] parts;
     private int partsLength;
@@ -34,14 +34,13 @@ public class SaleStats {
             productName = parts[1];
             try {
                 productCount = Integer.parseInt(parts[2]);
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Wrong Number Format! Retry");
                 System.out.println(ex.getMessage());
             }
             addNewSaleToTreeMap();
-            }
         }
+    }
 
     private void resetUserData() {
         clientName = "";
@@ -59,19 +58,15 @@ public class SaleStats {
     }
 
     private void addNewSaleToTreeMap() {
-        if (!clients.containsKey(clientName)) {
-            clients.put(clientName, new TreeMap<String, Integer>());
-        }
+        clients.putIfAbsent(clientName, new TreeMap<>());
         TreeMap<String, Integer> temp = clients.get(clientName);
-        if (!temp.containsKey(productName)) {
-            temp.put(productName, 0);
-        }
-        Integer oldProductCount = temp.get(productName);
-        temp.put(productName, oldProductCount + productCount);
+        temp.putIfAbsent(productName, 0);
+        final int count = productCount;
+        temp.computeIfPresent(productName, (k, v) -> v + count);
     }
 
     public void showSaleStats() {
-        for (Map.Entry<String, TreeMap<String, Integer>> entry: clients.entrySet()) {
+        for (Map.Entry<String, TreeMap<String, Integer>> entry : clients.entrySet()) {
             String key = entry.getKey();
             TreeMap<String, Integer> value = entry.getValue();
             System.out.println("Buyer Name: " + key);
@@ -82,9 +77,6 @@ public class SaleStats {
             }
         }
     }
-
-
-
 
 
 }
