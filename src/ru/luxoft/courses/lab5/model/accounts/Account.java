@@ -16,7 +16,7 @@ public class Account {
         this.principal = principal;
         this.login = login;
         this.password = password;
-        scoreMap = new HashMap<Integer,Score>();
+        scoreMap = new HashMap<>();
     }
 
     public Map<Integer, Score> getScoreMap() {

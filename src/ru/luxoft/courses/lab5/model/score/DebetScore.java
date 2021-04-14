@@ -4,7 +4,7 @@ import ru.luxoft.courses.lab5.model.accounts.Account;
 import ru.luxoft.courses.lab5.model.money.Money;
 
 public class DebetScore extends Score{
-    private CreditScore creditScore;
+    private final CreditScore creditScore;
 
     public DebetScore(Money balance, Account owner, Integer number, CreditScore creditScore) {
         super(balance, owner, number);

@@ -9,7 +9,7 @@ public abstract class Score implements MoneyInterface {
     private Account owner;
     private Integer number;
 
-    public Score(Money balance, Account owner, Integer number) {
+    protected Score(Money balance, Account owner, Integer number) {
         this.balance = balance;
         this.owner = owner;
         this.number = number;
@@ -51,10 +51,8 @@ public abstract class Score implements MoneyInterface {
 
         if (checkBefore()) {
             this.balance.setValue((usdValueThis + usdValueIn) * this.balance.getCurrency().getUsdCourse());
-        }
-        else {
+        } else {
             System.out.println("No Check!");
-            return;
         }
     }
 
