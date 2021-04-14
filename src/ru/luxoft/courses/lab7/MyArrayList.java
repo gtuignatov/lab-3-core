@@ -1,27 +1,29 @@
 package ru.luxoft.courses.lab7;
 
+import java.util.Arrays;
+
 public class MyArrayList<T> {
 
-    private final int INIT_SIZE = 16;
-    private final int CUT_RATE = 4;
+    private static final int INIT_SIZE = 16;
+    private static final int CUT_RATE = 4;
     private Object[] array = new Object[INIT_SIZE];
     private int pointer = 0;
 
     public void add(T item) {
-        if (pointer == array.length -1) {
-            resize(array.length*2);
+        if (pointer == array.length - 1) {
+            resize(array.length * 2);
             array[pointer++] = item;
         }
     }
 
     private void resize(int newLength) {
-        Object[] newArray = new Object[newLength];
-        System.arraycopy(array, 0, newArray, 0, pointer);
-        array = newArray;
+        array = Arrays.copyOf(array, newLength);
     }
 
     public T get(int index) {
-        return (T) array[index];
+        @SuppressWarnings("unchecked")
+        T t = (T) array[index];
+        return t;
     }
 
     public int size() {
@@ -29,12 +31,13 @@ public class MyArrayList<T> {
     }
 
     public void remove(int index) {
-        for (int i=index; i<pointer; i++) {
-            array[i] = array[i+1];
-            array[pointer] = null;
-            if (array.length > INIT_SIZE && pointer < array.length / CUT_RATE) {
-                resize(array.length / 2);
-            }
+        if (pointer >= index) {
+            System.arraycopy(array, index + 1, array, index, pointer - index);
+        }
+        array[pointer--] = null;
+
+        if (array.length > INIT_SIZE && pointer < array.length / CUT_RATE) {
+            resize(array.length / 2);
         }
     }
 }
