@@ -1,6 +1,6 @@
 package ru.luxoft.courses.lab8;
 
-public class HashMapImpl {
+public class HashMapImpl<K, V> {
 
     private float loadFactor = 0.75f;
     private int capacity = 100;
@@ -24,7 +24,7 @@ public class HashMapImpl {
         return false;
     }
 
-    public boolean containsKey(Object key) throws NullPointerException {
+    public boolean containsKey(K key) throws NullPointerException {
         if (key == null && table[0].getKey() == null) {
             return true;
         }
@@ -41,8 +41,8 @@ public class HashMapImpl {
         return false;
     }
 
-    public boolean containsValue(Object value) throws NullPointerException {
-        for (int i=0; i<table.length; i++ ) {
+    public boolean containsValue(V value) throws NullPointerException {
+        for (int i = 0; i < table.length; i++ ) {
             if (table[i] != null && table[i].getVal() == value) {
                 return true;
             }
@@ -50,8 +50,8 @@ public class HashMapImpl {
         return false;
     }
 
-    public Object get(Object key) throws NullPointerException {
-        Object ret = null;
+    public V get(K key) throws NullPointerException {
+        V ret = null;
         if (key == null) {
             Entry e = null;
             try {
@@ -60,7 +60,7 @@ public class HashMapImpl {
             catch (NullPointerException ex) {
             }
             if (e != null) {
-                return e.getVal();
+                return (V) e.getVal();
             }
             else {
                 int location = hashing(key.hashCode());
@@ -71,15 +71,15 @@ public class HashMapImpl {
                 catch (NullPointerException ex) {
                 }
                 if (eLocation != null && eLocation.getKey() == key) {
-                    return eLocation.getVal();
+                    return (V) eLocation.getVal();
                 }
             }
         }
         return ret;
     }
 
-    public Object put(Object key, Object val) throws NullPointerException {
-        Object ret = null;
+    public V put(K key, V val) throws NullPointerException {
+        V ret = null;
         if (key == null) {
             ret = putForNullKey(val);
             return ret;
@@ -97,7 +97,7 @@ public class HashMapImpl {
             catch (NullPointerException ex) {
             }
             if (e!=null && e.getKey() == key) {
-                ret = e.getVal();
+                ret = (V) e.getVal();
             }
             else {
                 Entry eNew = new Entry();
@@ -110,36 +110,37 @@ public class HashMapImpl {
         return ret;
     }
 
-    private Object putForNullKey(Object val) throws NullPointerException {
+    private V putForNullKey(V value) throws NullPointerException {
         Entry e = null;
         try {
             e = table[0];
         }
         catch (NullPointerException ex) {
         }
-        Object ret = null;
+        V ret = null;
         if (e!=null && e.getKey() == null) {
-            ret = e.getVal();
-            e.setVal(val);
+            ret = (V) e.getVal();
+            e.setVal(value);
             return ret;
         }
         else {
             Entry eNew = new Entry();
             eNew.setKey(null);
-            eNew.setVal(val);
+            eNew.setVal(value);
             table[0] = eNew;
             size++;
         }
         return ret;
     }
 
-    public Object remove(Object key) {
+    public V remove(K key) {
         int location = hashing(key.hashCode());
-        Object ret = null;
+        V ret = null;
         if (table[location].getKey() == key) {
-            for (int i=location; i<table.length; i++) {
-                table[i] = table[i+1];
+            for (int i = location; i < table.length - 1; i++) {
+                table[i] = table[i + 1];
             }
+        size--;
         }
         return ret;
     }

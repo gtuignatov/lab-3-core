@@ -2,22 +2,22 @@ package ru.luxoft.courses.lab8;
 
 class Entry <K, V>{
 
-    Object key;
-    Object val;
+    K key;
+    V val;
 
-    public Object getKey() {
+    public K getKey() {
         return key;
     }
 
-    public void setKey(Object key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
-    public Object getVal() {
+    public V getVal() {
         return val;
     }
 
-    public void setVal(Object val) {
+    public void setVal(V val) {
         this.val = val;
     }
 
