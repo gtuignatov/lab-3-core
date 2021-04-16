@@ -13,15 +13,15 @@ public class GenericListAgregator<T extends Number> {
 
     public double getAvgValue() {
         double sum = 0.0;
-        for (int i=0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++) {
             sum += arr[i].doubleValue();
         }
-        return sum/ arr.length;
+        return sum / arr.length;
     }
 
     public double getMaxValue() {
         double maxValue = arr[0].doubleValue();
-        for (int i=1; i < arr.length; i++) {
+        for (int i = 1; i < arr.length; i++) {
             if (arr[i].doubleValue() > maxValue) {
                 maxValue = arr[i].doubleValue();
             }
@@ -31,17 +31,12 @@ public class GenericListAgregator<T extends Number> {
 
     public double getMinValue() {
         double minValue = arr[0].doubleValue();
-        for (int i=1; i < arr.length; i++) {
+        for (int i = 1; i < arr.length; i++) {
             if (arr[i].doubleValue() < minValue) {
                 minValue = arr[i].doubleValue();
             }
         }
         return minValue;
     }
-
-
-
-
-
 
 }
