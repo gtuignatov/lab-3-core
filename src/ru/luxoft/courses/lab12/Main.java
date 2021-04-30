@@ -6,7 +6,7 @@ public class Main {
 
     private static boolean dbCreated = false;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         System.out.println("Products DB");
         String userInput = "";
         while (!"exit".equals(userInput)) {
@@ -15,7 +15,7 @@ public class Main {
         System.out.println("Program Exit");
     }
 
-    private static String userConsoleInput() throws Exception{
+    private static String userConsoleInput() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter | create | add ProductDescription Rate Quantity | remove ID | exit separated by spaces");
         String s = sc.nextLine();
@@ -25,9 +25,10 @@ public class Main {
         return userCommandSelector(s);
     }
 
-    private static String userCommandSelector(String s) throws Exception{
+    private static String userCommandSelector(String s) {
         String[] parts = s.split(" ");
-        switch (parts[0]) {
+        String command = parts[0];
+        switch (command) {
             case "create":
                 if (!dbCreated) {
                     productsCreateOperations();
@@ -42,11 +43,14 @@ public class Main {
                 break;
             case "remove":
                 removeOneProductById(parts);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected command: " + command);
         }
-        return parts[0];
+        return command;
     }
 
-    private static void removeOneProductById(String[] parts) throws Exception {
+    private static void removeOneProductById(String[] parts) {
         System.out.println("Remove One Product By ID");
         try {
             Integer id = Integer.valueOf(parts[1]);
@@ -58,7 +62,7 @@ public class Main {
         }
     }
 
-    private static void addNewProductToDb(String[] parts) throws Exception {
+    private static void addNewProductToDb(String[] parts) {
         ProductDAO dao = new ProductDAO();
         System.out.println("Adding New Product To DB");
         try {
@@ -75,7 +79,7 @@ public class Main {
         }
     }
 
-    private static void productsCreateOperations() throws Exception{
+    private static void productsCreateOperations() {
         Product product1 = new Product(1, "Bread", 1.0f, 100);
         Product product2 = new Product(2, "Milk", 2.5f, 200);
         Product product3 = new Product(3, "Meat", 15.8f, 350);
