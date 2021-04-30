@@ -2,13 +2,13 @@ package ru.luxoft.courses.lab8;
 
 public class HashMapImpl<K, V> {
 
-    private float loadFactor = 0.75f;
-    private int capacity = 100;
+    private static final int CAPACITY = 100;
+    @SuppressWarnings("unchecked")
+    private final Entry<K, V>[] table = new Entry[CAPACITY];
     private int size = 0;
-    private Entry table[] = new Entry[capacity];
 
     private int hashing(int hashCode) {
-        int location = hashCode % capacity;
+        int location = hashCode % CAPACITY;
         System.out.println("Location:" + location);
         return location;
     }
@@ -18,10 +18,7 @@ public class HashMapImpl<K, V> {
     }
 
     public boolean isEmpty() {
-        if (this.size == 0) {
-            return true;
-        }
-        return false;
+        return this.size == 0;
     }
 
     public boolean containsKey(K key) throws NullPointerException {
@@ -29,21 +26,13 @@ public class HashMapImpl<K, V> {
             return true;
         }
         int location = hashing(key.hashCode());
-        Entry e = null;
-        try {
-            e = table[location];
-        }
-        catch (NullPointerException ex) {
-        }
-        if (e!= null && e.getKey() == key) {
-            return true;
-        }
-        return false;
+        Entry<K, V> e = table[location];
+        return e != null && e.getKey() == key;
     }
 
     public boolean containsValue(V value) throws NullPointerException {
-        for (int i = 0; i < table.length; i++ ) {
-            if (table[i] != null && table[i].getVal() == value) {
+        for (Entry<K, V> entry : table) {
+            if (entry != null && entry.getVal() == value) {
                 return true;
             }
         }
@@ -51,31 +40,19 @@ public class HashMapImpl<K, V> {
     }
 
     public V get(K key) throws NullPointerException {
-        V ret = null;
         if (key == null) {
-            Entry e = null;
-            try {
-                e = table[0];
-            }
-            catch (NullPointerException ex) {
-            }
+            Entry<K, V> e = table[0];
             if (e != null) {
-                return (V) e.getVal();
+                return e.getVal();
             }
-            else {
-                int location = hashing(key.hashCode());
-                Entry eLocation = null;
-                try {
-                    eLocation = table[location];
-                }
-                catch (NullPointerException ex) {
-                }
-                if (eLocation != null && eLocation.getKey() == key) {
-                    return (V) eLocation.getVal();
-                }
+        } else {
+            int location = hashing(key.hashCode());
+            Entry<K, V> eLocation = table[location];
+            if (eLocation != null && eLocation.getKey() == key) {
+                return eLocation.getVal();
             }
         }
-        return ret;
+        return null;
     }
 
     public V put(K key, V val) throws NullPointerException {
@@ -83,24 +60,17 @@ public class HashMapImpl<K, V> {
         if (key == null) {
             ret = putForNullKey(val);
             return ret;
-        }
-        else {
+        } else {
             int location = hashing(key.hashCode());
-            if (location >= capacity) {
+            if (location >= CAPACITY) {
                 System.out.println("Rehashing required!");
                 return null;
             }
-            Entry e = null;
-            try {
-                e = table[location];
-            }
-            catch (NullPointerException ex) {
-            }
-            if (e!=null && e.getKey() == key) {
-                ret = (V) e.getVal();
-            }
-            else {
-                Entry eNew = new Entry();
+            Entry<K, V> e = table[location];
+            if (e != null && e.getKey() == key) {
+                ret = e.getVal();
+            } else {
+                Entry<K, V> eNew = new Entry<>();
                 eNew.setKey(key);
                 eNew.setVal(val);
                 table[location] = eNew;
@@ -111,20 +81,14 @@ public class HashMapImpl<K, V> {
     }
 
     private V putForNullKey(V value) throws NullPointerException {
-        Entry e = null;
-        try {
-            e = table[0];
-        }
-        catch (NullPointerException ex) {
-        }
+        Entry<K, V> e = table[0];
         V ret = null;
-        if (e!=null && e.getKey() == null) {
-            ret = (V) e.getVal();
+        if (e != null && e.getKey() == null) {
+            ret = e.getVal();
             e.setVal(value);
             return ret;
-        }
-        else {
-            Entry eNew = new Entry();
+        } else {
+            Entry<K, V> eNew = new Entry<>();
             eNew.setKey(null);
             eNew.setVal(value);
             table[0] = eNew;
@@ -137,15 +101,13 @@ public class HashMapImpl<K, V> {
         int location = hashing(key.hashCode());
         V ret = null;
         if (table[location].getKey() == key) {
-            for (int i = location; i < table.length - 1; i++) {
-                table[i] = table[i + 1];
+            ret = table[location].getVal();
+            if (table.length - 1 - location >= 0) {
+                System.arraycopy(table, location + 1, table, location, table.length - 1 - location);
             }
-        size--;
+            size--;
         }
         return ret;
     }
-
-
-
 
 }

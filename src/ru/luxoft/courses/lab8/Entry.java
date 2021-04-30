@@ -1,9 +1,9 @@
 package ru.luxoft.courses.lab8;
 
-class Entry <K, V>{
+class Entry<K, V> {
 
-    K key;
-    V val;
+    private K key;
+    private V val;
 
     public K getKey() {
         return key;
@@ -23,13 +23,7 @@ class Entry <K, V>{
 
     @Override
     public int hashCode() {
-        int prime = 13;
-        int mul = 11;
-        if (key != null) {
-            int hashCode = prime * mul * key.hashCode();
-            return hashCode;
-        }
-        return 0;
+        return key != null ? 13 * 11 * key.hashCode() : 0;
     }
 
     @Override
@@ -37,13 +31,10 @@ class Entry <K, V>{
         if (this == o) {
             return true;
         }
-        if (o == null || this.getClass().getName() != o.getClass().getName()) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        Entry e = (Entry) o;
-        if (this.key == e.key) {
-            return true;
-        }
-        return false;
+        Entry<?, ?> e = (Entry<?, ?>) o;
+        return e.key == this.key;
     }
 }

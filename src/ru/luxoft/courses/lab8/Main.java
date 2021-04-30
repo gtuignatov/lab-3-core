@@ -5,6 +5,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("My HashMap With Generic");
         HashMapImpl<Integer, String> myHashMap = new HashMapImpl<>();
+        //todo ????????
+        System.out.println(myHashMap.containsKey(null));
+
         myHashMap.put(null, "Zero");
         myHashMap.put(5, "Five");
         myHashMap.put(7, "Seven");
