@@ -6,10 +6,10 @@ import java.util.TreeMap;
 
 public class SaleStats {
 
-    TreeMap<String, TreeMap<String, Integer>> clients = new TreeMap<>();
+    private final TreeMap<String, TreeMap<String, Integer>> clients = new TreeMap<>();
+    private final Scanner sc = new Scanner(System.in);
 
     public String addSale() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Enter BuyerName, Product and Quantity, separated by spaces, exit command to cancel");
         String userStatString;
         while (true) {
@@ -22,16 +22,10 @@ public class SaleStats {
     }
 
     private void checkUserData(String userStatString) throws NumberFormatException {
-        String clientName = "";
-        String productName = "";
-        Integer productCount = 0;
         String[] parts = splitUserLineByParts(userStatString);
         if (parts.length == 3) {
-            clientName = parts[0];
-            productName = parts[1];
             try {
-                productCount = Integer.parseInt(parts[2]);
-                addNewSaleToTreeMap(clientName, productName, productCount);
+                addNewSaleToTreeMap(parts[0], parts[1], Integer.parseInt(parts[2]));
             } catch (NumberFormatException ex) {
                 System.out.println("Wrong Number Format! Retry");
                 System.out.println(ex.getMessage());
@@ -57,18 +51,10 @@ public class SaleStats {
 
     public void showSaleStats() {
         for (Map.Entry<String, TreeMap<String, Integer>> entry : clients.entrySet()) {
-            String key = entry.getKey();
-            TreeMap<String, Integer> value = entry.getValue();
-            System.out.println("Buyer Name: " + key);
-            for (Map.Entry<String, Integer> product : value.entrySet()) {
-                String keyProduct = product.getKey();
-                Integer valueProduct = product.getValue();
-                System.out.println("Product: " + keyProduct + " : " + valueProduct);
+            System.out.println("Buyer Name: " + entry.getKey());
+            for (Map.Entry<String, Integer> product : entry.getValue().entrySet()) {
+                System.out.println("Product: " + product.getKey() + " : " + product.getValue());
             }
         }
     }
 }
-
-
-
-
