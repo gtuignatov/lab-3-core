@@ -9,7 +9,7 @@ public class ATM {
     private boolean operLimitToggle;
 
     public ATM() {
-        Class thisClass = this.getClass();
+        Class<? extends ATM> thisClass = this.getClass();
         for (Annotation annotation : thisClass.getAnnotations()) {
             if (annotation instanceof OperationLimitATM) {
                 this.operLimit = ((OperationLimitATM) annotation).limit();

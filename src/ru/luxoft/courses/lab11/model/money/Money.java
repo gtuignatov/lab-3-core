@@ -1,7 +1,7 @@
 package ru.luxoft.courses.lab11.model.money;
 
 public class Money {
-    private Currency currency;
+    private final Currency currency;
     private double value;
 
     public Money(double value, String currencyName) {

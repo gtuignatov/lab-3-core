@@ -4,7 +4,7 @@ import ru.luxoft.courses.lab11.model.accounts.Account;
 import ru.luxoft.courses.lab11.model.money.Money;
 
 public class CurrentScore extends Score {
-    private DebetScore debetScore;
+    private final DebetScore debetScore;
 
     public CurrentScore(Money balance, Account owner, Integer number, DebetScore debetScore) {
         super(balance, owner, number);
