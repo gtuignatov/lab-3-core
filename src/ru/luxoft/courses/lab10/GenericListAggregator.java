@@ -1,10 +1,9 @@
 package ru.luxoft.courses.lab10;
 
-public class GenericListAgregator<T extends Number> {
+public class GenericListAggregator<T extends Number> {
+    private final T[] arr;
 
-    T[] arr;
-
-    public GenericListAgregator(T[] arr) {
+    public GenericListAggregator(T[] arr) {
         if (arr == null) {
             throw new IllegalStateException("Array must not be a null");
         }
@@ -13,8 +12,8 @@ public class GenericListAgregator<T extends Number> {
 
     public double getAvgValue() {
         double sum = 0.0;
-        for (int i = 0; i < arr.length; i++) {
-            sum += arr[i].doubleValue();
+        for (T t : arr) {
+            sum += t.doubleValue();
         }
         return sum / arr.length;
     }
